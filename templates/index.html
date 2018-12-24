@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+      <link rel="shortcut icon" href="#">
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial scale=1">
+      <link href="https://fonts.googleapis.com/css?family=Mukta:300,400,700" rel="stylesheet">
+      <style>
+            html, body{
+      font-family: "mukta";
+      width:100%;
+      height:100%;
+      margin:0;
+      padding:0;
+}
+div{
+      box-sizing: border-box;
+}
+.ui-widget.ui-widget-content {
+    border: 1px solid #c5c5c5;
+}
+.ui-menu{
+      width:300px;
+      padding:0 4px;
+}
+.ui-widget-content {
+    border: 1px solid #dddddd;
+    background: #ffffff;
+    color: #333333;
+    list-style: none;
+}
+.ui-menu-item{
+      list-style: none;
+      padding:5px 0px;
+      text-indent: 0;
+}
+.ui-helper-hidden-accessible div{
+      text-align: center;
+      width:100%;
+      display:none !important;
+}
+.wrapper{
+      text-align: center;
+}
+.welcome{
+      text-align: center;
+      font-size:24px;
+      font-weight:300;
+      margin-top:20vh;
+      margin-bottom:30px;
+}
+.title{
+      font-weight:700;
+      font-style:italic;
+}
+.inputwrapper{
+      position:relative;
+      padding:40px 0;
+      width:100%;
+}
+input{
+      font-family: "mukta";
+      font-size:16px;
+      padding:0 6px;
+      width:500px;
+}
+.ingredient{
+      width:100%;
+      text-align: center;
+}
+.ingredient li{
+      list-style: none;
+      padding:10px;
+      background:#333333;
+      color:#fff;
+      display:inline-block;
+      width:150px;
+      text-align: center;
+      border-radius: 10px;
+      margin:10px;
+      cursor: pointer;
+      transition:.3s;
+}
+.ingredient li:hover{
+      opacity:.8;
+}
+.search{
+      font-size:18px;
+      padding:10px 20px;
+      color:#fff;
+      background-color:darkolivegreen;
+      width:160px;
+      border-radius:10px;
+      box-shadow: 0 0 18px rgba(85,107,47,0.2);
+      margin:0 auto;
+      display:none;
+      transition: .3s;
+      cursor:pointer;
+      opacity: 0;
+
+}
+.search:hover{
+      transform:translateY(-4px);
+}
+.greybox{
+      width:100%;
+      height:100%;
+      position:fixed;
+      left:0;
+      top:0;
+      background:rgba(0,0,0,0.5);
+      display:none;
+      opacity:0;
+      transition:.3s;
+}
+.result{
+      width:50%;
+      height:300px;
+      text-align:center;
+      padding-top:138px;
+      background:#fff;
+      margin:calc(50vh - 150px) auto 0;
+      position:relative;
+      font-size:18px;
+      
+}
+.prediction{
+      font-weight:bold;
+}
+.xmark{
+position:absolute;
+	right:5%;
+	top:20px;
+      cursor: pointer;
+}
+.xmark svg path{
+      stroke:rgba(0,0,0,0.4);
+			stroke-width: 2px;
+}
+</style>
+      <meta charset="utf-8">
+      <title>Get Cuisine</title>
+
+</head>
+
+<body style="width:100%; height:100%;">
+
+      <div class="wrapper">
+            <div class="welcome">
+                  Welcome to <span class="title">Get Cuisine!</span><br />
+                  We provide you the best cuisine to look for with your ingredients.
+            </div>
+            <div class="ingredient">
+                  <ul></ul>
+            </div>
+            <div class="inputwrapper">
+                  <input type="text" id="ingredients" name="ingredients">
+            </div>
+            <div class="search" action="" method="post">Search</div></a>
+      </div>
+      <div class="greybox">
+            <div class="result">
+                  <div class="xmark">
+                        <svg width="50" height="50">
+                              <path d="M10 10 L40 40 M40 10 L10 40" />
+                        </svg>
+
+                  </div>
+                  <div class="resulttext">Look for <span class="prediction"></span> foods to cook!</div>
+            </div>
+      </div>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>;
+
+      <script type="text/javascript" src="/static/train_js.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <script>
+            var ingrelist = [];
+            var autolist = [];
+            
+            traindata.forEach(function (item) {
+                  for (let i = 0; i < item.ingredients.length; i++) {
+                        if (!(autolist.includes(item.ingredients[i]))) {
+                              autolist.push(item.ingredients[i]);
+                        }
+                  }
+            });
+
+
+            function reopac() {
+                  $('.search').css('display', 'block');
+                  setTimeout(function () {
+                        $('.search').css('opacity', '1');
+                  }, 10);
+            }
+            function reblur() {
+                  $('.search').css('opacity', '0');
+
+                  setTimeout(function () {
+                        $('.search').css('display', 'none');
+                  }, 300);
+            }
+            function createNewList(name){
+                  let newDiv = document.createElement("li");
+                  newDiv.appendChild(document.createTextNode(name));
+                  $('.ingredient ul').append(newDiv);
+                  newDiv.setAttribute("id", name)
+            }
+
+            $(function () {
+                  var availableTags = autolist;
+                  $("#ingredients").autocomplete({
+                        source: availableTags,
+                        select: function (event, ui) {
+                              ingrelist.push(ui.item.value);
+                              createNewList(ui.item.value);
+                              reopac();
+                        },
+                        close: function (event, ui) {
+                              $('#ingredients').val('');
+                        },
+                        search: function (event, ui) {
+                              reblur();
+                        }
+                  });
+            });
+            
+           
+                  $('.ingredient ul').on('click','li', function(){
+                        let idName=$(this).attr('id');
+                        let indexNum=ingrelist.indexOf(idName);
+                        ingrelist.splice(indexNum, 1);
+                  $(this).remove();
+                  
+            })
+           
+                  
+    
+           
+            $('.xmark').click(function () {
+                  location.reload();
+            })
+
+            function displayResult(response) {
+                  $('.greybox').css('display', 'block');
+                  setTimeout(function () {
+                        $('.greybox').css('opacity', '1')
+                  }, 100);
+                  let result = response.predict_result;
+                  if(!(result == 'southern_us' || result == 'cajun_creole')){
+                        result=result[0].toUpperCase()+result.slice(1)
+                  }
+                  else{
+                        if(result == 'southern_us'){
+                              result = 'Southern US';
+                        }
+                         else if(result == 'cajun_creole'){
+                        result = 'Cajun Creole'
+                  }
+                  }
+                  
+                  $('.prediction').text(result);
+            }
+
+
+            $('.search').click(function () {
+                  let ingredient_str =''
+                  for(let i=0;i<ingrelist.length;i++){
+                        ingredient_str+=ingrelist[i]+',';
+                  }
+                  ingrelist = { 'ingredient': [ingredient_str] };
+                  $.ajax({
+                        type: 'POST',
+                        contentType: 'application/json;charset=UTF-8',
+                        url: 'result',
+                        dataType: "JSON",
+                        data: JSON.stringify(ingrelist),
+                        success: function (response) { displayResult(response) },
+
+                  })
+            })
+      </script>
+</body>
+
+</html>
