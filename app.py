@@ -18,7 +18,7 @@ model = pickle.load(open("./model.pkl","rb"))
 def index():
     return render_template('index.html')
 
-
+#Get the ajax data to get the prediction result
 @app.route('/result', methods=['POST','GET'])
 def post_data():
     jsdata = request.json['ingredient']

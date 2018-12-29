@@ -1,6 +1,8 @@
+$(document).ready(function(){
 var ingrelist = [];
 var autolist = [];
 
+//Create a list of the ingredients for the autofill from the training data 
 traindata.forEach(function (item) {
     for (let i = 0; i < item.ingredients.length; i++) {
         if (!(autolist.includes(item.ingredients[i]))) {
@@ -9,13 +11,15 @@ traindata.forEach(function (item) {
     }
 });
 
-
+//Display the 'Search' button only when ingredients are selected
 function reopac() {
     $('.search').css('display', 'block');
     setTimeout(function () {
         $('.search').css('opacity', '1');
     }, 10);
 }
+
+//Hide the 'Search' button if a user search(focus on the search bar) for another ingredient
 function reblur() {
     $('.search').css('opacity', '0');
 
@@ -23,6 +27,8 @@ function reblur() {
         $('.search').css('display', 'none');
     }, 300);
 }
+
+//Create autofill
 function createNewList(name) {
     let newDiv = document.createElement("li");
     newDiv.appendChild(document.createTextNode(name));
@@ -30,25 +36,30 @@ function createNewList(name) {
     newDiv.setAttribute("id", name)
 }
 
+
 $(function () {
     var availableTags = autolist;
     $("#ingredients").autocomplete({
         source: availableTags,
         select: function (event, ui) {
+            //Add a selected ingredient to the array
             ingrelist.push(ui.item.value);
             createNewList(ui.item.value);
+            //Opaque the Search button
             reopac();
         },
         close: function (event, ui) {
+            //if an ingredient is selected, empty the search bar
             $('#ingredients').val('');
         },
         search: function (event, ui) {
+            //if a user do another search, hide the Search button
             reblur();
         }
     });
 });
 
-
+//if selected ingredients are clicked, get rid of them from the array and hide
 $('.ingredient ul').on('click', 'li', function () {
     let idName = $(this).attr('id');
     let indexNum = ingrelist.indexOf(idName);
@@ -59,17 +70,19 @@ $('.ingredient ul').on('click', 'li', function () {
 
 
 
-
+//Reload the page when the result box is closed
 $('.xmark').click(function () {
     location.reload();
 })
 
+//Run when ajax call is succeded - Display prediction result
 function displayResult(response) {
     $('.greybox').css('display', 'block');
     setTimeout(function () {
         $('.greybox').css('opacity', '1')
     }, 100);
     let result = response.predict_result;
+    //Change the first letter of the cuisine name to uppercase
     if (!(result == 'southern_us' || result == 'cajun_creole')) {
         result = result[0].toUpperCase() + result.slice(1)
     }
@@ -84,6 +97,7 @@ function displayResult(response) {
 
     $('.prediction').text(result);
 
+    //Give Google Search function to search for the recipe
     let searchline = "";
     for (let i = 0; i < ingrelist.ingredient.length; i++) {
         searchline += ingrelist.ingredient[i] + ' ';
@@ -93,7 +107,7 @@ function displayResult(response) {
     $("#redirect_search").attr('href', searchline)
 }
 
-
+//Search button click event - ajax call
 $('#getCuisine').click(function () {
     let ingredient_str = ''
     for (let i = 0; i < ingrelist.length; i++) {
@@ -109,4 +123,5 @@ $('#getCuisine').click(function () {
         success: function (response) { displayResult(response) },
 
     })
+})
 })
