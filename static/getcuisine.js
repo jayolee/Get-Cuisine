@@ -1,16 +1,9 @@
 $(document).ready(function(){
 var ingrelist = [];
-var autolist = [];
 
 
 //Create a list of the ingredients for the autofill from the training data 
-traindata.forEach(function (item) {
-    for (let i = 0; i < item.ingredients.length; i++) {
-        if (!(autolist.includes(item.ingredients[i]))) {
-            autolist.push(item.ingredients[i]);
-        }
-    }
-});
+
 
 //Display the 'Search' button only when ingredients are selected
 function reopac() {
@@ -39,7 +32,7 @@ function createNewList(name) {
 
 
 $(function () {
-    var availableTags = autolist;
+    var availableTags = traindata;
     $("#ingredients").autocomplete({
         source: availableTags,
         select: function (event, ui) {
