@@ -2,6 +2,7 @@ $(document).ready(function(){
 var ingrelist = [];
 var autolist = [];
 
+
 //Create a list of the ingredients for the autofill from the training data 
 traindata.forEach(function (item) {
     for (let i = 0; i < item.ingredients.length; i++) {
@@ -82,6 +83,7 @@ function displayResult(response) {
         $('.greybox').css('opacity', '1')
     }, 100);
     let result = response.predict_result;
+    let imgresult='/static/images/'+result+'.svg';
     //Change the first letter of the cuisine name to uppercase
     if (!(result == 'southern_us' || result == 'cajun_creole')) {
         result = result[0].toUpperCase() + result.slice(1)
@@ -96,6 +98,7 @@ function displayResult(response) {
     }
 
     $('.prediction').text(result);
+    $('#resultImg').attr('src',imgresult);
 
     //Give Google Search function to search for the recipe
     let searchline = "";

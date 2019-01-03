@@ -112,6 +112,18 @@ input{
     
 
 }
+#mainimg{
+    width:95%;
+    max-width:300px;
+    display:block;
+    margin:0 auto 10px;
+}
+#resultImg{
+    width:350px;
+    max-width:95%;
+    display:block;
+    margin:0 auto;
+}
 #getCuisine{
     display:none;
     opacity: 0;
@@ -119,7 +131,7 @@ input{
 }
 #searchGoogle{
     position:absolute;
-    bottom:50px;
+    bottom:60px;
     left:50%;
     transform:translateX(-50%);
     -webkit-transform: translateX(-50%);
@@ -146,17 +158,17 @@ input{
     top:0;
     background:rgba(0,0,0,0.5);
     display:none;
-    opacity:0;
+    opacity:1;
     transition:.3s;
 }
 .result{
-    width:380px;
+    width:580px;
     max-width:90%;
-    height:300px;
+    height:500px;
     text-align:center;
     padding:0;
     background:#fff;
-    margin:calc(50vh - 150px) auto 0;
+    margin:calc(50vh - 250px) auto 0;
     position:relative;
     font-size:20px;
     
@@ -164,7 +176,7 @@ input{
 .resulttext{
     width:100%;
     position:absolute;
-    top:38%;
+    top:20px;
    
 }
 .prediction{
@@ -175,6 +187,7 @@ position:absolute;
   right:5%;
   top:20px;
     cursor: pointer;
+    z-index:999;
 }
 .xmark svg path{
     stroke:rgba(0,0,0,0.4);

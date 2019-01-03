@@ -3,11 +3,11 @@
 
 <head>
       <link rel="shortcut icon" href="#">
-      <link rel="stylesheet" href="../static/style.css">
+      <link rel="stylesheet" href="/static/style.css">
       <meta name="viewport" content="width=device-width, initial scale=1">
       <link href="https://fonts.googleapis.com/css?family=Mukta:300,400,700" rel="stylesheet">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <script type="text/javascript" src="../static/train_js.js"></script>
+      <script type="text/javascript" src="/static/train_js.js"></script>
       <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
       <script type="text/javascript" src="/static/getcuisine.js"></script>
       <meta charset="utf-8">
@@ -19,6 +19,7 @@
 
       <div class="wrapper">
             <div class="welcome">
+                  <img id="mainimg" alt="Main Image" src="/static/images/main.svg" />
                   Welcome to <span class="title">Get Cuisine!</span><br />
                   We provide you the best cuisine to look for with your ingredients.
             </div>
@@ -26,7 +27,7 @@
                   <ul></ul>
             </div>
             <div class="inputwrapper">
-                  <input type="text" id="ingredients" name="ingredients">
+                  <input type="text" id="ingredients" name="ingredients" placeholder="Onion" autofocus>
             </div>
             <div class="search" id="getCuisine" action="" method="post">Search</div>
       </div>
@@ -40,7 +41,9 @@
                         </svg>
 
                   </div>
-                  <div class="resulttext">Look for <span class="prediction"></span> foods to cook!</div>
+                  <div class="resulttext">
+                        <img id="resultImg" alt="Cuisine image" src="" />
+                        Look for <span class="prediction"></span> foods to cook!</div>
                   <a id="redirect_search" target="_blank" href="#"><div class="search" id="searchGoogle">Search Recipes on Google</div></a>
             </div>
       </div>
